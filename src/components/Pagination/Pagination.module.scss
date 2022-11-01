@@ -1,0 +1,23 @@
+.root {
+  display: flex;
+  li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 45px;
+    height: 45px;
+    border: 1px solid #fe5f1e;
+    color: #fe5f1e;
+    border-radius: 50%;
+    margin-right: 10px;
+    cursor: pointer;
+
+    .active {
+      background: green;
+    }
+    &:hover {
+      background-color: #fe5f1e;
+      color: #fff;
+    }
+  }
+}
