@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import { setSortValue } from '../redux/features/pizzas/pizzasSlice';
+import { useDispatch } from 'react-redux';
 
-function Sort({ value, setSortValue }) {
+function Sort({ value }) {
+  const dispatch = useDispatch();
   const [openSort, setOpenSort] = useState(false);
   const arrSort = [
     { name: 'популярности(DESC)', propertySort: 'rating' },
@@ -12,7 +15,7 @@ function Sort({ value, setSortValue }) {
   ];
 
   function handleClickSort(obj) {
-    setSortValue(obj);
+    dispatch(setSortValue(obj));
     setOpenSort(false);
   }
   return (

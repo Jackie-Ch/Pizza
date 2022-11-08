@@ -1,6 +1,11 @@
 import React from 'react';
+import { setActiveCategory } from '../redux/features/pizzas/pizzasSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
-function Catigories({ value, setActiveCategory }) {
+function Catigories() {
+  const dispatch = useDispatch();
+  const activeCategory = useSelector((state) => state.pizzas.activeCategory);
+
   const categories = [
     'Все',
     'Мясные',
@@ -15,9 +20,9 @@ function Catigories({ value, setActiveCategory }) {
       <ul>
         {categories.map((catigory, index) => (
           <li
-            onClick={() => setActiveCategory(index)}
+            onClick={() => dispatch(setActiveCategory(index))}
             key={index}
-            className={value === index ? 'active' : ''}
+            className={activeCategory === index ? 'active' : ''}
           >
             {catigory}
           </li>

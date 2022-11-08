@@ -4,20 +4,22 @@ import Sort from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock/PizzaBlock';
 import Skeleton from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination/Pagination';
+import { useSelector, useDispatch } from 'react-redux';
+import { setLoading } from '../redux/features/pizzas/pizzasSlice';
 
 function Home({ searchValue }) {
   const [items, setItems] = useState([]);
-  const [isLoading, setLoading] = useState(true);
-  const [activeCategory, setActiveCategory] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortValue, setSortValue] = useState({
-    name: 'популярности',
-    propertySort: 'rating',
-  });
+
+  const { activeCategory, isLoading, sortValue } = useSelector(
+    (state) => state.pizzas
+  );
+  const dispatch = useDispatch();
+
   const itemsOnPage = 6;
 
   useEffect(() => {
-    setLoading(true);
+    dispatch(setLoading(true));
 
     const order = sortValue.propertySort.includes('-') ? 'asc' : 'desc';
     const sortBy = sortValue.propertySort.replace('-', '');
@@ -29,10 +31,10 @@ function Home({ searchValue }) {
       .then((res) => res.json())
       .then((result) => {
         setItems(result);
-        setLoading(false);
+        dispatch(setLoading(false));
       });
     window.scrollTo(0, 0);
-  }, [activeCategory, sortValue]);
+  }, [activeCategory, sortValue, dispatch]);
 
   const userCrop = paginate(items, currentPage, itemsOnPage);
 
@@ -52,15 +54,12 @@ function Home({ searchValue }) {
     const startIndex = (currentPage - 1) * itemsOnPage;
     return [...pizzas].splice(startIndex, itemsOnPage);
   }
-
+  console.log(isLoading);
   return (
     <>
       <div className="content__top">
-        <Catigories
-          value={activeCategory}
-          setActiveCategory={(index) => setActiveCategory(index)}
-        />
-        <Sort value={sortValue} setSortValue={(i) => setSortValue(i)} />
+        <Catigories />
+        <Sort value={sortValue} setSortValue={(i) => i} />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">{isLoading ? skeleton : pizzaBlock}</div>
